@@ -1,8 +1,12 @@
-export type ApiGatewayRoutes = Record<string, Record<string, Function>>; // { [method]: { [path]: handler } }
-export type EventBridgeRoutes = Record<string, Record<string, Function>>; // { [method]: { [path]: handler } }
-export type LambdaRoutes = Record<string, Function>; // { [name]: handler }
-export type SqsRoutes = Record<string, Function>; // { [name]: handler }
+// { [method]: { [path]: handler } } for API Gateway
+export type ApiGatewayRoutes = Record<string, Record<string, Function>>;
 
+// { [operationName]: handler } for EventBridge, where operationName is the field inside event.detail.operationName
+export type EventBridgeRoutes = Record<string, Function>;
+
+// { [name]: handler } for Lambda and SQS
+export type LambdaRoutes = Record<string, Function>;
+export type SqsRoutes = Record<string, Function>;
 
 export type DispatchRoutes = {
   apigateway?: ApiGatewayRoutes,
@@ -10,3 +14,4 @@ export type DispatchRoutes = {
   lambda?: LambdaRoutes,
   sqs?: SqsRoutes,
 };
+

@@ -20,14 +20,10 @@ export async function dispatchEvent(event: any, routes: DispatchRoutes): Promise
 
   switch(type) {
     case EventType.EventBridge: {
-      const method = normalized.eventRaw.method?.toLowerCase();
-      const path = normalized.eventRaw.path;
-      handlerFn = (method && path)
-        ? routes.eventbridge?.[method]?.[path]
-          || routes.eventbridge?.default?.[path]
-          || routes.eventbridge?.[method]?.default
-          || routes.eventbridge?.default?.default
-        : undefined;
+      const operationName = normalized.eventRaw.detail?.operationName;
+      handlerFn = operationName
+        ? routes.eventbridge?.[operationName] || routes.eventbridge?.default
+        : routes.eventbridge?.default;
       break;
     }
     case EventType.ApiGateway: {
