@@ -1,5 +1,6 @@
 import { RequestService, ResponseService } from 'serverless-request-manager';
 import { EventType } from './types/event-type.enum';
+import { DispatchRoutes } from './types/dispatchRoutes';
 
 export function detectEventType(event: any): EventType {
   if (event.source == 'EVENT_BRIDGE') return EventType.EventBridge;
@@ -8,18 +9,6 @@ export function detectEventType(event: any): EventType {
   if (event.awsRequestId) return EventType.Lambda;
   return EventType.Unknown;
 }
-
-type ApiGatewayRoutes = Record<string, Record<string, Function>>; // { [method]: { [path]: handler } }
-type EventBridgeRoutes = Record<string, Record<string, Function>>; // { [method]: { [path]: handler } }
-type LambdaRoutes = Record<string, Function>; // { [name]: handler }
-type SqsRoutes = Record<string, Function>; // { [name]: handler }
-
-type DispatchRoutes = {
-  apigateway?: ApiGatewayRoutes,
-  eventbridge?: EventBridgeRoutes,
-  lambda?: LambdaRoutes,
-  sqs?: SqsRoutes,
-};
 
 const responseService = new ResponseService()
 
