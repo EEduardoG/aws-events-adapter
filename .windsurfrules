@@ -1,0 +1,3 @@
+This is a npm package that handle multiple AWS events and dispatch them to a lambda function.
+This pacakge recieves an event from AWS. it can be from AWS EventBridge, AWS ApiGateway, AWS Lambda, etc.
+This project is using TypeScript as main language.
