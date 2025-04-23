@@ -1,6 +1,6 @@
 {
   "name": "aws-events-adapter",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "description": "NPM package to handle and dispatch AWS events to a Lambda function.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -29,5 +29,8 @@
     "jest": "^29.0.0",
     "ts-jest": "^29.0.0",
     "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "serverless-request-manager": "^0.0.9"
   }
 }
