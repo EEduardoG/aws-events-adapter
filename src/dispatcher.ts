@@ -37,7 +37,9 @@ export async function dispatchEvent(event: any, routes: DispatchRoutes): Promise
       break;
     }
     case EventType.Sqs: {
-      handlerFn = routes.sqs?.default;
+      normalized.payload = JSON.parse(normalized.eventRaw.Records[0].body);
+      const queueName = normalized.eventRaw.Records[0].eventSourceARN.split(':').pop();
+      handlerFn = routes.sqs?.[queueName] || routes.sqs?.default;
       break;
     }
     default:
@@ -52,6 +54,6 @@ export async function dispatchEvent(event: any, routes: DispatchRoutes): Promise
       data:"No handler found for this event."
     });
   }
-  return handlerFn(normalized);
+  return await handlerFn(normalized);
 
 }
