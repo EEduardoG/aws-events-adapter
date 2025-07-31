@@ -14,8 +14,12 @@ const responseService = new ResponseService()
 
 export async function dispatchEvent(event: any, routes: DispatchRoutes): Promise<any> {
 
+  console.log("Event Received: ", {event});
+
   const type = detectEventType(event);
+  console.log("Event Type: ", {type});
   const normalized = new RequestService().setEvent(event, type) 
+  console.log("Event Normalized: ", {normalized});
   let handlerFn;
 
   switch(type) {
