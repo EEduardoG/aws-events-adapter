@@ -33,6 +33,8 @@ export async function dispatchEvent(event: any, routes: DispatchRoutes): Promise
     case EventType.ApiGateway: {
       const method = normalized.eventRaw.httpMethod?.toLowerCase();
       const path = normalized.eventRaw.path;
+      console.log("Event Method: ", {method});
+      console.log("Event Path: ", {path});
       handlerFn = routes.apigateway?.[method]?.[path] || routes.apigateway?.default?.[path] || routes.apigateway?.[method]?.default || routes.apigateway?.default?.default;
       break;
     }
@@ -47,16 +49,12 @@ export async function dispatchEvent(event: any, routes: DispatchRoutes): Promise
       break;
     }
     default:
-      throw responseService.responseBadRequest({
-        code:"AWS_EVENT_NOT_SUPPORTED",
-        data:"AWS Event not supported."
-      });
+      console.log(`Event type not supported: ${type}`);
+      return responseService.responseBadRequest();
   }
   if (!handlerFn) {
-    throw responseService.responseBadRequest({
-      code:"HANDLER_NOT_FOUND",
-      data:"No handler found for this event."
-    });
+    console.log(`Handler not found for event: ${normalized.eventRaw.path}`);
+    return responseService.responseForbidden();
   }
   return await handlerFn(normalized);
 
