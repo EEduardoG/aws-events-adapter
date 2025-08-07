@@ -32,7 +32,7 @@ export async function dispatchEvent(event: any, routes: DispatchRoutes): Promise
     }
     case EventType.ApiGateway: {
       const method = normalized.eventRaw.httpMethod?.toLowerCase();
-      const path = normalized.eventRaw.path;
+      const path = normalized.eventRaw.resource;
       console.log("Event Method: ", {method});
       console.log("Event Path: ", {path});
       handlerFn = routes.apigateway?.[method]?.[path] || routes.apigateway?.default?.[path] || routes.apigateway?.[method]?.default || routes.apigateway?.default?.default;
