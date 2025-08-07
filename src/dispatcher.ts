@@ -1,6 +1,6 @@
 import { RequestService, ResponseService } from 'serverless-request-manager';
 import { EventType } from './types/event-type.enum';
-import { DispatchRoutes } from './types/dispatchRoutes';
+import { DispatchRoutes, HttpMethod } from './types/dispatchRoutes';
 
 export function detectEventType(event: any): EventType {
   if (event.source == 'EVENT_BRIDGE') return EventType.EventBridge;
@@ -31,11 +31,11 @@ export async function dispatchEvent(event: any, routes: DispatchRoutes): Promise
       break;
     }
     case EventType.ApiGateway: {
-      const method = normalized.eventRaw.httpMethod?.toLowerCase();
+      const method = normalized.eventRaw.httpMethod?.toLowerCase() as HttpMethod;
       const path = normalized.eventRaw.resource;
       console.log("Event Method: ", {method});
       console.log("Event Path: ", {path});
-      handlerFn = routes.apigateway?.[method]?.[path] || routes.apigateway?.default?.[path] || routes.apigateway?.[method]?.default || routes.apigateway?.default?.default;
+      handlerFn = routes?.apigateway?.[method]?.[path]?.handler;
       break;
     }
     case EventType.Lambda: {
